@@ -23,7 +23,9 @@ public class Main {
         }
         System.out.println("Enter your primary class name (the one with psvm)");
         String primaryClass = systemIn.next();
-
+        if(!files.contains(primaryClass)) {
+            files.add(primaryClass);
+        }
 
         HashSet<String> imports = new HashSet<>();
         ArrayList<String> fileRead = new ArrayList<>();
