@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     private static final Scanner systemIn = new Scanner(System.in);
+
     public static void main(String[] args) {
         String prefix = "resources\\";
         String suffix = ".java";
@@ -14,16 +15,16 @@ public class Main {
         System.out.println("JAVA Quera Merger");
         System.out.println("Please put all off your source files in a folder names resources in project directory then,");
         System.out.println("Enter all of your public class names-with primary one- (Enter -1 for end)");
-        while(true){
+        while (true) {
             String input = systemIn.next();
-            if(input.equals("-1")) {
+            if (input.equals("-1")) {
                 break;
             }
             files.add(input);
         }
         System.out.println("Enter your primary class name (the one with psvm)");
         String primaryClass = systemIn.next();
-        if(!files.contains(primaryClass)) {
+        if (!files.contains(primaryClass)) {
             files.add(primaryClass);
         }
 
@@ -57,7 +58,7 @@ public class Main {
 
         PrintWriter writer;
         try {
-            writer = new PrintWriter("result.java");
+            writer = new PrintWriter(primaryClass + suffix);
         } catch (
                 Exception e) {
             e.printStackTrace();
@@ -75,7 +76,7 @@ public class Main {
         }
         writer.close();
 
-        System.out.println("Your file is ready \"result.java\"");
+        System.out.println("Your file is ready \"" + primaryClass + suffix + "\"");
     }
 
 }
