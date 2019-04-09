@@ -22,15 +22,16 @@ public class Main {
             }
             files.add(input);
         }
-        System.out.println("Enter your primary class name (the one with psvm)");
-        String primaryClass = systemIn.next();
-        if (!files.contains(primaryClass)) {
-            files.add(primaryClass);
-        }
+//        System.out.println("Enter your primary class name (the one with psvm)");
+        String primaryClass = "default"; //= systemIn.next();
+//        if (!files.contains(primaryClass)) {
+//            files.add(primaryClass);
+//        }
 
         HashSet<String> imports = new HashSet<>();
         ArrayList<String> fileRead = new ArrayList<>();
 
+        int classBeginingIndex = -1;
         for (String filename :
                 files) {
             File file = new File(prefix + filename + suffix);
@@ -42,12 +43,24 @@ public class Main {
                 return;
             }
 
-
             while (scanner.hasNextLine()) {
                 String input = scanner.nextLine();
-                if (!filename.equals(primaryClass)) {
+//                if (!filename.equals(primaryClass)) {
+                if(input.contains("public class ")) {
                     input = input.replace("public class ", "class ");
+                    classBeginingIndex = fileRead.size();
                 }
+//                }
+
+                if(input.contains("public static void main(String[]") || input.contains("public static void main (String[]")){
+                     primaryClass = filename;
+                     String classLine =  fileRead.get(classBeginingIndex);
+                     classLine = classLine.replace("class ","public class ");
+                     fileRead.remove(classBeginingIndex);
+                     fileRead.add(classBeginingIndex,classLine);
+                }
+
+
                 if ((input.length() > 5) && input.substring(0, 6).equals("import")) {
                     imports.add(input);
                 } else {
@@ -75,7 +88,9 @@ public class Main {
             writer.println(write);
         }
         writer.close();
-
+        if(primaryClass == null){
+            System.out.println("No primary class found\n");
+        }
         System.out.println("Your file is ready \"" + primaryClass + suffix + "\"");
     }
 
